@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Tarea{% endblock %}
+
+{% block content %}
+<a href="{% url 'management:tarea_list' %}">&larr; Volver</a>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Guardar</button>
+</form>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Tareas{% endblock %}
+
+{% block content %}
+<div class="actions" style="margin-bottom: 1rem;">
+    <a class="btn" href="{% url 'management:tarea_create' %}">Nueva tarea</a>
+</div>
+
+<form class="filters" method="get">
+    <label for="estado">Estado:</label>
+    <select name="estado" id="estado">
+        <option value="">Todos</option>
+        <option value="planificado" {% if estado_filtrado == "planificado" %}selected{% endif %}>Planificado</option>
+        <option value="en_progreso" {% if estado_filtrado == "en_progreso" %}selected{% endif %}>En progreso</option>
+        <option value="completado" {% if estado_filtrado == "completado" %}selected{% endif %}>Completado</option>
+    </select>
+    <button class="btn secondary" type="submit">Filtrar</button>
+</form>
+
+{% if tareas %}
+<table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Proyecto</th>
+            <th>Responsable</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+            <th>Entrega</th>
+            <th>Avance</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in tareas %}
+        <tr>
+            <td>{{ tarea.titulo }}</td>
+            <td>{{ tarea.proyecto.nombre }}</td>
+            <td>{{ tarea.asignado_a|default:"Sin asignar" }}</td>
+            <td>{{ tarea.get_estado_display }}</td>
+            <td>{{ tarea.get_prioridad_display }}</td>
+            <td>{{ tarea.fecha_entrega }}</td>
+            <td>{{ tarea.porcentaje_avance }}%</td>
+            <td class="actions">
+                <a href="{% url 'management:tarea_update' tarea.pk %}">Editar</a>
+                <a href="{% url 'management:tarea_delete' tarea.pk %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p class="empty">No hay tareas registradas con el filtro actual.</p>
+{% endif %}
+{% endblock %}

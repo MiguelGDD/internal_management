@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Empleados{% endblock %}
+
+{% block content %}
+<div class="actions" style="margin-bottom: 1rem;">
+    <a class="btn" href="{% url 'management:empleado_create' %}">Nuevo empleado</a>
+</div>
+
+<form class="filters" method="get">
+    <label for="q">Buscar:</label>
+    <input type="text" id="q" name="q" value="{{ request.GET.q|default_if_none:'' }}">
+    <button class="btn secondary" type="submit">Filtrar</button>
+</form>
+
+{% if empleados %}
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Cargo</th>
+            <th>Departamento</th>
+            <th>Ingreso</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for empleado in empleados %}
+        <tr>
+            <td>{{ empleado.nombre }}</td>
+            <td>{{ empleado.correo }}</td>
+            <td>{{ empleado.cargo }}</td>
+            <td>{{ empleado.departamento.nombre }}</td>
+            <td>{{ empleado.fecha_contratacion }}</td>
+            <td class="actions">
+                <a href="{% url 'management:empleado_update' empleado.pk %}">Editar</a>
+                <a href="{% url 'management:empleado_delete' empleado.pk %}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p class="empty">No hay empleados registrados.</p>
+{% endif %}
+{% endblock %}

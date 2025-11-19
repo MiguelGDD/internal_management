@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="card-grid">
+    <div class="card">
+        <h2>Departamentos</h2>
+        <p>{{ departamentos }}</p>
+    </div>
+    <div class="card">
+        <h2>Empleados</h2>
+        <p>{{ empleados }}</p>
+    </div>
+    <div class="card">
+        <h2>Proyectos</h2>
+        <p>{{ proyectos }}</p>
+    </div>
+    <div class="card">
+        <h2>Tareas</h2>
+        <p>{{ tareas }}</p>
+    </div>
+</section>
+
+<section class="card" style="margin-top: 2rem;">
+    <h2>Seguimiento</h2>
+    <p>Avance promedio de tareas activas: <strong>{{ avance_promedio }}%</strong></p>
+    <h3>Tareas destacadas</h3>
+    {% if tareas_destacadas %}
+        <ul>
+            {% for tarea in tareas_destacadas %}
+                <li>
+                    {{ tarea.titulo }} - {{ tarea.proyecto.nombre }} |
+                    vence {{ tarea.fecha_entrega }} |
+                    estado: {{ tarea.get_estado_display }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="empty">No hay tareas pendientes.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Proyectos{% endblock %}
+
+{% block content %}
+<div class="actions" style="margin-bottom: 1rem;">
+    <a class="btn" href="{% url 'management:proyecto_create' %}">Nuevo proyecto</a>
+</div>
+
+{% if proyectos %}
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Departamento</th>
+            <th>Responsable</th>
+            <th>Inicio</th>
+            <th>Cierre</th>
+            <th>Tareas</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for proyecto in proyectos %}
+            <tr>
+                <td>{{ proyecto.nombre }}</td>
+                <td>{{ proyecto.departamento.nombre }}</td>
+                <td>{{ proyecto.responsable|default:"Sin asignar" }}</td>
+                <td>{{ proyecto.fecha_inicio }}</td>
+                <td>{{ proyecto.fecha_fin }}</td>
+                <td>{{ proyecto.total_tareas }}</td>
+                <td class="actions">
+                    <a href="{% url 'management:proyecto_update' proyecto.pk %}">Editar</a>
+                    <a href="{% url 'management:proyecto_delete' proyecto.pk %}">Eliminar</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p class="empty">No tienes proyectos registrados.</p>
+{% endif %}
+{% endblock %}
